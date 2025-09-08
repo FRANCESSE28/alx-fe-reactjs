@@ -2,9 +2,9 @@ import { Route, Routes } from 'react-router-dom';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
-import About from './Pages/About';
-import Home from './Pages/Home';
-import Services from './Pages/Services';
+import About from './pages /About';
+import Home from './pages /Home';
+import Services from './pages /Services';
 
 function App() {
   return (

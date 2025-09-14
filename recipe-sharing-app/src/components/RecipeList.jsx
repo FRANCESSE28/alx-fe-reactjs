@@ -1,4 +1,4 @@
-import { useRecipeStore } from '../recipeStore';
+import { useRecipeStore } from './recipeStore';  // ✅ updated path
 
 const RecipeList = () => {
   const recipes = useRecipeStore((state) => state.recipes);
@@ -21,3 +21,4 @@ const RecipeList = () => {
 };
 
 export default RecipeList;
+

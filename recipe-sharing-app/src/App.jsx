@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useParams } from 'react-router-dom';
 import AddRecipeForm from './components/AddRecipeForm';
 import RecipeList from './components/RecipeList';
 import RecipeDetails from './components/RecipeDetails';
@@ -26,9 +26,6 @@ function App() {
 }
 
 // ✅ Helper wrapper to grab :id from the URL
-import { useParams } from 'react-router-dom';
-import RecipeDetails from './components/RecipeDetails';
-
 const RecipeDetailsWrapper = () => {
   const { id } = useParams();
   return <RecipeDetails recipeId={Number(id)} />;

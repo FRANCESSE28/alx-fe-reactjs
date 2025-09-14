@@ -2,6 +2,9 @@ import { create } from 'zustand';
 
 const useRecipeStore = create((set) => ({
   recipes: [],
+  searchQuery: '', // ✅ added search state
+  setSearchQuery: (query) => set({ searchQuery: query }), // ✅ action
+
   addRecipe: (recipe) =>
     set((state) => ({ recipes: [...state.recipes, recipe] })),
   updateRecipe: (updatedRecipe) =>
@@ -17,3 +20,4 @@ const useRecipeStore = create((set) => ({
 }));
 
 export default useRecipeStore;
+

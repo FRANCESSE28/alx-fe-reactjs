@@ -3,29 +3,31 @@ import useRecipeStore from './recipeStore';
 
 const RecipeList = () => {
   const recipes = useRecipeStore((state) => state.recipes);
-  const searchTerm = useRecipeStore((state) => state.searchTerm);
+  const favorites = useRecipeStore((state) => state.favorites);
+  const addFavorite = useRecipeStore((state) => state.addFavorite);
+  const removeFavorite = useRecipeStore((state) => state.removeFavorite);
 
-  const filteredRecipes = recipes.filter((recipe) =>
-    recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const toggleFavorite = (id) => {
+    if (favorites.includes(id)) {
+      removeFavorite(id);
+    } else {
+      addFavorite(id);
+    }
+  };
 
   return (
     <div>
       <h2>Recipes</h2>
-      {filteredRecipes.length === 0 ? (
-        <p>No recipes found.</p>
-      ) : (
-        <ul>
-          {filteredRecipes.map((recipe) => (
-            <li key={recipe.id}>
-              <Link to={`/recipe/${recipe.id}`}>
-                <h3>{recipe.title}</h3>
-              </Link>
-              <p>{recipe.description}</p>
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul>
+        {recipes.map((recipe) => (
+          <li key={recipe.id}>
+            <Link to={`/recipe/${recipe.id}`}>{recipe.title}</Link>
+            <button onClick={() => toggleFavorite(recipe.id)}>
+              {favorites.includes(recipe.id) ? '★ Unfavorite' : '☆ Favorite'}
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

@@ -1,12 +1,11 @@
-import { Link } from 'react-router-dom';
 import useRecipeStore from './recipeStore';
 
 const RecipeList = () => {
   const recipes = useRecipeStore((state) => state.recipes);
-  const searchQuery = useRecipeStore((state) => state.searchQuery);
+  const searchTerm = useRecipeStore((state) => state.searchTerm);
 
   const filteredRecipes = recipes.filter((recipe) =>
-    recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
+    recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -18,7 +17,8 @@ const RecipeList = () => {
         <ul>
           {filteredRecipes.map((recipe) => (
             <li key={recipe.id}>
-              <Link to={`/recipe/${recipe.id}`}>{recipe.title}</Link>
+              <h3>{recipe.title}</h3>
+              <p>{recipe.description}</p>
             </li>
           ))}
         </ul>

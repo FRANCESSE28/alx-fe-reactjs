@@ -1,15 +1,15 @@
 import useRecipeStore from './recipeStore';
 
 const SearchBar = () => {
-  const searchQuery = useRecipeStore((state) => state.searchQuery);
-  const setSearchQuery = useRecipeStore((state) => state.setSearchQuery);
+  const searchTerm = useRecipeStore((state) => state.searchTerm);
+  const setSearchTerm = useRecipeStore((state) => state.setSearchTerm);
 
   return (
     <input
       type="text"
       placeholder="Search recipes..."
-      value={searchQuery}
-      onChange={(e) => setSearchQuery(e.target.value)}
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
     />
   );
 };

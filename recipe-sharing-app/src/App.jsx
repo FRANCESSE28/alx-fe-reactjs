@@ -1,9 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AddRecipeForm from './components/AddRecipeForm';
 import RecipeList from './components/RecipeList';
 import RecipeDetails from './components/RecipeDetails';
 import SearchBar from './components/SearchBar';
-
+import { useParams } from 'react-router-dom';
 
 function App() {
   return (
@@ -11,17 +11,16 @@ function App() {
       <div>
         <h1>Recipe Sharing App</h1>
         <Routes>
-          {/* Homepage shows form + recipe list */}
           <Route
             path="/"
             element={
               <>
+                <SearchBar />   {/* ✅ added */}
                 <AddRecipeForm />
                 <RecipeList />
               </>
             }
           />
-          {/* Details page */}
           <Route path="/recipe/:id" element={<RecipeDetailsWrapper />} />
         </Routes>
       </div>

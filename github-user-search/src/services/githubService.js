@@ -1,5 +1,5 @@
 // src/services/githubService.js
-export async function searchUsers(query, location = "", minRepos = 0) {
+export async function fetchUserData(query, location = "", minRepos = 0) {
   try {
     let searchQuery = query;
 
@@ -25,5 +25,4 @@ export async function searchUsers(query, location = "", minRepos = 0) {
     return [];
   }
 }
-
 

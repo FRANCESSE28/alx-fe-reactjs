@@ -1,24 +1,24 @@
 // src/services/githubService.js
+export async function searchUsers(query, location = "") {
+  try {
+    let searchQuery = query;
+    if (location) {
+      searchQuery += `+location:${location}`;
+    }
 
-// fetch basic user data (Task 1)
-export const fetchUserData = async (username) => {
-  const response = await fetch(`https://api.github.com/users/${username}`);
-  if (!response.ok) {
-    throw new Error("User not found");
+    const response = await fetch(
+      `https://api.github.com/search/users?q=${searchQuery}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch users");
+    }
+
+    const data = await response.json();
+    return data.items; // GitHub search API returns { items: [...] }
+  } catch (error) {
+    console.error(error);
+    return [];
   }
-  return response.json();
-};
-
-// 🔹 new: search users with filters (Task 2)
-export const searchUsers = async (username, location, minRepos) => {
-  let query = `q=${username}`;
-  if (location) query += `+location:${location}`;
-  if (minRepos) query += `+repos:>=${minRepos}`;
-
-  const response = await fetch(`https://api.github.com/search/users?${query}`);
-  if (!response.ok) {
-    throw new Error("Error fetching users");
-  }
-  return response.json();
-};
+}
 

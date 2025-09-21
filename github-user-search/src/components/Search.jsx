@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { fetchUserData } from "../services/githubService";
+import { searchUsers } from "../services/githubService";
 
 function Search() {
   const [username, setUsername] = useState("");
-  const [user, setUser] = useState(null);
+  const [location, setLocation] = useState("");
+  const [minRepos, setMinRepos] = useState("");
+  const [results, setResults] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -11,11 +13,15 @@ function Search() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setUser(null);
+    setResults([]);
 
     try {
-      const data = await fetchUserData(username);  // ✅ calling fetchUserData
-      setUser(data);
+      const users = await searchUsers({ username, location, minRepos });
+      if (users.length === 0) {
+        setError("Looks like we cant find the user");
+      } else {
+        setResults(users);
+      }
     } catch (err) {
       setError("Looks like we cant find the user");
     } finally {
@@ -28,9 +34,23 @@ function Search() {
       <form onSubmit={handleSearch} className="space-y-4">
         <input
           type="text"
-          placeholder="Enter GitHub username"
+          placeholder="GitHub username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          className="border p-2 rounded w-full"
+        />
+        <input
+          type="text"
+          placeholder="Location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="border p-2 rounded w-full"
+        />
+        <input
+          type="number"
+          placeholder="Minimum repos"
+          value={minRepos}
+          onChange={(e) => setMinRepos(e.target.value)}
           className="border p-2 rounded w-full"
         />
         <button
@@ -43,18 +63,30 @@ function Search() {
 
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-600">{error}</p>}
-      {user && (
-        <div className="mt-4">
-          <img src={user.avatar_url} alt={user.login} className="w-24 h-24 rounded-full" />
-          <h2 className="text-xl font-bold">{user.name || user.login}</h2>
-          <a
-            href={user.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 underline"
-          >
-            View Profile
-          </a>
+
+      {/* ✅ results list with map() */}
+      {results.length > 0 && (
+        <div className="mt-6 grid gap-4">
+          {results.map((user) => (
+            <div key={user.id} className="flex items-center space-x-4 p-4 border rounded">
+              <img
+                src={user.avatar_url}
+                alt={user.login}
+                className="w-16 h-16 rounded-full"
+              />
+              <div>
+                <h2 className="font-bold">{user.login}</h2>
+                <a
+                  href={user.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 underline"
+                >
+                  View Profile
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>

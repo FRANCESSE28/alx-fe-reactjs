@@ -1,11 +1,18 @@
 import axios from "axios";
 
-// Function to fetch a single user's data
-export const fetchUserData = async (username) => {
+// Search users with advanced filters
+export const searchUsers = async (username, location, minRepos) => {
   try {
-    const response = await axios.get(`https://api.github.com/users/${username}`);
-    return response.data; // returns user info
+    let query = username ? `${username}` : "";
+    if (location) query += `+location:${location}`;
+    if (minRepos) query += `+repos:>${minRepos}`;
+
+    const response = await axios.get(
+      `https://api.github.com/search/users?q=${query}`
+    );
+    return response.data.items; // returns list of users
   } catch (error) {
-    throw error; // we'll handle it in the component
+    throw error;
   }
 };
+

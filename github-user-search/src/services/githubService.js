@@ -1,9 +1,13 @@
 // src/services/githubService.js
-export async function searchUsers(query, location = "") {
+export async function searchUsers(query, location = "", minRepos = 0) {
   try {
     let searchQuery = query;
+
     if (location) {
       searchQuery += `+location:${location}`;
+    }
+    if (minRepos > 0) {
+      searchQuery += `+repos:>=${minRepos}`;
     }
 
     const response = await fetch(
@@ -15,10 +19,11 @@ export async function searchUsers(query, location = "") {
     }
 
     const data = await response.json();
-    return data.items; // GitHub search API returns { items: [...] }
+    return data.items; // GitHub Search API returns { items: [...] }
   } catch (error) {
     console.error(error);
     return [];
   }
 }
+
 
